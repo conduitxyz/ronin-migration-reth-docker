@@ -1,8 +1,10 @@
 # ronin-migration-reth-docker
 
-Dockerfile that can be used to run a reth node for the Ronin L1 -> L2 migration. This can be run as a typical reth node, with some extra parameters for the migration.
+Dockerfiles that can be used to run a reth node for the Ronin L1 -> L2 migration. This can be run as a typical reth node, with some extra parameters for the migration.
 
-Note that you will need to run a consensus-layer client to power reth, typically `op-node`. Docs for running `op-node` are here: https://docs.optimism.io/node-operators/guides/configuration/consensus-clients
+Note that you will need to run a consensus-layer client to power reth, typically `op-node`. Docs for running `op-node` are here: https://docs.optimism.io/node-operators/guides/configuration/consensus-clients. We also include an `op-node` that should be used.
+
+We expect the testnet migration to take ~3 hours, and the mainnet migration to take ~7 hours.
 
 ## Ronin-specific configuration parameters
 
@@ -22,3 +24,13 @@ For Ronin: `OP_NODE_P2P_STATIC=[tbd]`
 ## Troubleshooting
 
 If you run into issues, try deleting the persistent data in your `--datadir` directory and restart the reth container image.
+
+## Rolling your own
+If you'd like to roll your own images, the appropriate files will be available under:
+https://storage.googleapis.com/conduit-public-dls/${NETWORK}-state.jsonl.zst
+https://storage.googleapis.com/conduit-public-dls/${NETWORK}-header.hash
+https://storage.googleapis.com/conduit-public-dls/${NETWORK}-header.rlp
+https://storage.googleapis.com/conduit-public-dls/${NETWORK}-genesis.json
+https://storage.googleapis.com/conduit-public-dls/${NETWORK}-rollup.json
+
+Where you can replace ${NETWORK} with [saigon|ronin], depending on which network you are syncing.
