@@ -28,9 +28,14 @@ If you run into issues, try deleting the persistent data in your `--datadir` dir
 ## Rolling your own
 If you'd like to roll your own images, the appropriate files will be available under:
 https://storage.googleapis.com/conduit-public-dls/${NETWORK}-state.jsonl.zst
+
 https://storage.googleapis.com/conduit-public-dls/${NETWORK}-header.hash
+
 https://storage.googleapis.com/conduit-public-dls/${NETWORK}-header.rlp
+
 https://storage.googleapis.com/conduit-public-dls/${NETWORK}-genesis.json
+
 https://storage.googleapis.com/conduit-public-dls/${NETWORK}-rollup.json
+
 
 Where you can replace ${NETWORK} with [saigon|ronin], depending on which network you are syncing.
