@@ -27,6 +27,8 @@ If you run into issues, try deleting the persistent data in your `--datadir` dir
 
 ## Rolling your own
 If you'd like to roll your own images, the appropriate files will be available under:
+
+
 https://storage.googleapis.com/conduit-public-dls/${NETWORK}-state.jsonl.zst
 
 https://storage.googleapis.com/conduit-public-dls/${NETWORK}-header.hash
