@@ -1,4 +1,4 @@
-# ronin-migration-reth-docker
+# Ronin Migration Docker Images (op-reth, op-node)
 
 Dockerfiles that can be used to run a reth node for the Ronin L1 -> L2 migration. This can be run as a typical reth node, with some extra parameters for the migration.
 
