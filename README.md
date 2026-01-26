@@ -18,7 +18,7 @@ The rollup.json file with automatically be downloaded, and environmental variabl
 
 In addition the standard parameters, you will need to set the `OP_NODE_P2P_STATIC` variable.
 
-For Saigon: `OP_NODE_P2P_STATIC=[tbd]`
+For Saigon: `OP_NODE_P2P_STATIC=/ip4/34.127.119.42/tcp/9222/p2p/16Uiu2HAmJQbotGrMbuQWT9Sz46bYQ87EU2F7qqHzuTuZZ7oCjuE7`
 For Ronin: `OP_NODE_P2P_STATIC=[tbd]`
 
 ## Troubleshooting
