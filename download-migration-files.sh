@@ -20,6 +20,11 @@ while true; do
   sleep "$INTERVAL"
 done
 
+if [ ! -f "state.jsonl" ]; then
+  echo "decompressing state dump..."
+  unzstd state.jsonl.zst
+fi
+
 while true; do
   if [ -f "header.hash" ]; then
     echo "header.hash already downloaded"
@@ -61,11 +66,6 @@ while true; do
   echo "Download failed, retrying in ${INTERVAL}s..."
   sleep "$INTERVAL"
 done
-
-if [ ! -f "state.jsonl" ]; then
-  echo "decompressing state dump..."
-  unzstd state.jsonl.zst
-fi
 
 if [ ! -f "${DATADIR}/db/static_files"]; then
   echo "doing initial state import..."
