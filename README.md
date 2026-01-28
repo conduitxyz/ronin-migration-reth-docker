@@ -13,6 +13,10 @@ Set the environment variable `DATADIR` to the same `--datadir` parameter you wou
 
 You will also need to set the `NETWORK=[saigon|ronin]` environment variable, depending on which network you are running the image for. For Saigon select `saigon`, for ronin mainnet select `ronin`.
 
+The rollup sequencer endpoint for testnet will be: https://rpc-saigon-testnet-cc58e966ql.t.conduit.xyz
+
+For Mainnet it will be: [tbd]
+
 Other arguments will need to be set as well, below is an example you might set in a k8s yaml file:
 ```
 env:
@@ -21,7 +25,7 @@ env:
 - name: NETWORK
   value: saigon
 args:
-- --rollup.sequencer https://mainnet-sequencer.base.org --http --ws --authrpc.port 9551 --authrpc.jwtsecret /path/to/jwt.hex
+- --rollup.sequencer https://rpc-saigon-testnet-cc58e966ql.t.conduit.xyz --http --ws --authrpc.port 9551 --authrpc.jwtsecret /path/to/jwt.hex
 ```
 
 ### Op-node
