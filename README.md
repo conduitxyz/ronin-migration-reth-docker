@@ -15,6 +15,11 @@ You will also need to set the `NETWORK=[saigon|ronin]` environment variable, dep
 
 Other arguments will need to be set as well, below is an example you might set in a k8s yaml file:
 ```
+env:
+- name: DATADIR
+  value: /path/to/datadir
+- name: NETWORK
+  value: saigon
 args:
 - --rollup.sequencer https://mainnet-sequencer.base.org --http --ws --authrpc.port 9551 --authrpc.jwtsecret /path/to/jwt.hex
 ```
@@ -30,6 +35,9 @@ For Ronin: `OP_NODE_P2P_STATIC=[tbd]`
 
 Other arguments will need to be set as well, below is an example you might set in a k8s yaml file:
 ```
+env:
+- name: OP_NODE_P2P_STATIC
+  value: /ip4/34.187.134.72/tcp/9222/p2p/16Uiu2HAmFyGhL6G7CRgc77zmEeWAdBJA2vFsY9LSYzJQfnCrpWUW
 args:
 - --l1=<your-ethereum-L1-rpc> --l2=http://localhost:9551 --l2.jwt-secret=/path/to/jwt.hex --rpc.addr=0.0.0.0 --rpc.port=7000 --l1.beacon=<your-beacon-node-http-endpoint>
 ```
