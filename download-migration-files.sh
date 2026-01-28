@@ -72,4 +72,4 @@ if [ ! -f "${DATADIR}/db/static_files"]; then
   op-reth init-state state.jsonl --datadir=$DATADIR --chain=genesis.json --header=header.rlp --header-hash=$(cat header.hash) --without-ovm
 fi;
 
-exec op-reth "$@"
+exec op-reth node --datadir=$DATADIR --chain=genesis.json "$@"
