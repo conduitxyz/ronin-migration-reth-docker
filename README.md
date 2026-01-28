@@ -13,6 +13,12 @@ Set the environment variable `DATADIR` to the same `--datadir` parameter you wou
 
 You will also need to set the `NETWORK=[saigon|ronin]` environment variable, depending on which network you are running the image for. For Saigon select `saigon`, for ronin mainnet select `ronin`.
 
+Other arguments will need to be set as well, below is an example you might set in a k8s yaml file:
+```
+args:
+- --rollup.sequencer https://mainnet-sequencer.base.org --http --ws --authrpc.port 9551 --authrpc.jwtsecret /path/to/jwt.hex
+```
+
 ### Op-node
 The rollup.json file with automatically be downloaded, and environmental variable set, so no need to set the `--rollup.config` flag.
 
@@ -21,6 +27,12 @@ In addition the standard parameters, you will need to set the `OP_NODE_P2P_STATI
 For Saigon: `OP_NODE_P2P_STATIC=/ip4/34.187.134.72/tcp/9222/p2p/16Uiu2HAmFyGhL6G7CRgc77zmEeWAdBJA2vFsY9LSYzJQfnCrpWUW`
 
 For Ronin: `OP_NODE_P2P_STATIC=[tbd]`
+
+Other arguments will need to be set as well, below is an example you might set in a k8s yaml file:
+```
+args:
+- --l1=<your-ethereum-L1-rpc> --l2=http://localhost:9551 --l2.jwt-secret=/path/to/jwt.hex --rpc.addr=0.0.0.0 --rpc.port=7000 --l1.beacon=<your-beacon-node-http-endpoint>
+```
 
 ## Troubleshooting
 
