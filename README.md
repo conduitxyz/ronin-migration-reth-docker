@@ -37,6 +37,8 @@ For Saigon: `OP_NODE_P2P_STATIC=/ip4/34.187.134.72/tcp/9222/p2p/16Uiu2HAmFyGhL6G
 
 For Ronin: `OP_NODE_P2P_STATIC=[tbd]`
 
+You will also need to set the `NETWORK=[saigon|ronin]` environment variable, depending on which network you are running the image for. For Saigon select `saigon`, for ronin mainnet select `ronin`.
+
 Other arguments will need to be set as well, below is an example you might set in a k8s yaml file:
 ```
 env:
