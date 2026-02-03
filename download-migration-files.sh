@@ -2,7 +2,7 @@
 
 set -exuo pipefail
 
-INTERVAL="${3:-5}"   # seconds between retries (default: 5)
+INTERVAL=5   # seconds between retries (default: 5)
 
 if [ ! -f "${DATADIR}/db/static_files"]; then
   echo "Importing state for ${NETWORK}..."
