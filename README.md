@@ -54,6 +54,8 @@ args:
 
 If you run into issues, try deleting the persistent data in your `--datadir` directory and restart the reth container image.
 
+Please ensure that for tesntet you have at least 100GB of space. For mainnet, at least 800GB of space.
+
 ## Rolling your own
 If you'd like to roll your own images, the appropriate files will be available under:
 
