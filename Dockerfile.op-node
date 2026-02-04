@@ -1,4 +1,8 @@
-FROM us-docker.pkg.dev/oplabs-tools-artifacts/images/op-node:v1.16.5
+FROM us-docker.pkg.dev/oplabs-tools-artifacts/images/op-node:v1.16.5 AS opnode
+
+FROM ubuntu:latest
+
+COPY --from=opnode /usr/local/bin/op-node /usr/local/bin/
 
 RUN apt update && apt install curl zstd -y
 # Copy the check_sync_status.sh script into the container
