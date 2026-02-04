@@ -52,13 +52,20 @@ args:
 
 ## Resource specifications
 Testnet:
+
 CPU: 2
+
 Memory: 40Gi
+
 Disk: 100Gi
 
+
 Mainnet:
+
 CPU: 2
+
 Memory: 120Gi
+
 Disk: 800Gi
 
 ## Troubleshooting
