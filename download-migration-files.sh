@@ -4,7 +4,7 @@ set -exuo pipefail
 
 INTERVAL=5   # seconds between retries (default: 5)
 
-if [ ! -f "${DATADIR}/db/static_files"]; then
+if [ ! -f "${DATADIR}/db/static_files" ]; then
   echo "Importing state for ${NETWORK}..."
   while true; do
     if [ -f "state.jsonl.zst" ]; then
