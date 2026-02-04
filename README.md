@@ -50,11 +50,20 @@ args:
 - --l1=<your-ethereum-L1-rpc> --l2=http://localhost:9551 --l2.jwt-secret=/path/to/jwt.hex --rpc.addr=0.0.0.0 --rpc.port=7000 --l1.beacon=<your-beacon-node-http-endpoint>
 ```
 
+## Resource specifications
+Testnet:
+CPU: 2
+Memory: 40Gi
+Disk: 100Gi
+
+Mainnet:
+CPU: 2
+Memory: 120Gi
+Disk: 800Gi
+
 ## Troubleshooting
 
 If you run into issues, try deleting the persistent data in your `--datadir` directory and restart the reth container image.
-
-Please ensure that for tesntet you have at least 100GB of space. For mainnet, at least 800GB of space.
 
 ## Rolling your own
 If you'd like to roll your own images, the appropriate files will be available under:
