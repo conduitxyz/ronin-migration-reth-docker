@@ -20,4 +20,4 @@ while true; do
   sleep "$INTERVAL"
 done
 
-exec OP_NODE_ROLLUP_CONFIG=rollup.json op-node "$@"
+OP_NODE_ROLLUP_CONFIG=rollup.json op-node "$@"
