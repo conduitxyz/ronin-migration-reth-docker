@@ -1,12 +1,12 @@
 # Saigon Fork Upgrade
 
-This upgrade requires all node operators to update their Reth execution client and apply a new genesis file befoe the hardfork activates.
+This upgrade requires all node operators on the Saigon network to update their Reth execution client and apply a new genesis file before the hardfork activates.
 
 This is an **execution client only** hardfork.
 
 > **WARNING**
 All node operators must upgrade their Execution Client to continue following the chain.
-> 
+
 
 ## Upgrade Timeline
 
@@ -34,7 +34,7 @@ All node operators must upgrade their Execution Client to continue following the
 
 ## Download Links
 
-| Asset | **Docker image* |
+| Asset | *Docker image* |
 | --- | --- |
 | Reth | Docker image: https://github.com/conduitxyz/conduit-op-reth/pkgs/container/conduit-op-reth/684236333?tag=v1.0.0-rc.1 |
 
