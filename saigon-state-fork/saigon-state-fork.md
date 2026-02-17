@@ -12,7 +12,7 @@ All node operators must upgrade their Execution Client to continue following the
 
 | Date | Milestone |
 | --- | --- |
-| Wednesday, February 18, 2026 12:00:00 AM GMT (`1771372800`) | Saigon hardfork activates |
+| Tuesday, February 24, 2026 12:00:00 AM GMT (`1771891200`) | Saigon hardfork activates |
 
 ## Upgrade Details
 
@@ -40,13 +40,13 @@ All node operators must upgrade their Execution Client to continue following the
 
 | **Reth Genesis File** | **Download** | md5 hash |
 | --- | --- | --- |
-| Saigon | [Link](https://api.conduit.xyz/file/v1/optimism/genesis/saigon-testnet-cc58e966ql) | 6cb46260ff4c48e7b15fa342ddb980d2  |
+| Saigon | [Link](https://api.conduit.xyz/file/v1/optimism/genesis/saigon-testnet-cc58e966ql) | 62f280a4817805e087e6609b892bfc9e  |
 
 ## Confirm Upgrade
 
 Reth should log the fork timestamp at startup. 
 
-If you see these logs on startup with the correct fork name `StateOverrideFork0` and timestamp `1771372800`, the upgrade was applied successfully.
+If you see these logs on startup with the correct fork name `StateOverrideFork0` and timestamp `1771891200`, the upgrade was applied successfully.
 
 **Saigon:**
 
@@ -74,7 +74,7 @@ If you see these logs on startup with the correct fork name `StateOverrideFork0`
 │ - Holocene                         @0                                                                                                            │
 │ - Isthmus                          @0                                                                                                            │
 │ - Jovian                           @0                                                                                                            │
-│ - StateOverrideFork0               @1771372800                                                                                                   │
+│ - StateOverrideFork0               @1771891200                                                                                                   │
 │ 2026-02-16T01:32:56.692765Z  INFO Transaction pool initialized                                                                                   │
 │ 2026-02-16T01:32:57.790723Z  INFO P2P networking initialized enode=enode://053a0386052608b4c04fc596c3f28012deb740afaaeec0cd447aef7e43e6cbff9cc8b │
 │ 2026-02-16T01:32:57.791853Z  INFO StaticFileProducer initialized                                                                                 │
