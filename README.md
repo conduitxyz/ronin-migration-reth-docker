@@ -15,7 +15,7 @@ You will also need to set the `NETWORK=[saigon|ronin]` environment variable, dep
 
 The rollup sequencer endpoint for testnet will be: https://rpc-saigon-testnet-cc58e966ql.t.conduit.xyz
 
-For Mainnet it will be: [tbd]
+For Mainnet it will be: https://rpc-ronin-mainnet-bfz9fadqzl.t.conduit.xyz
 
 Other arguments will need to be set as well, below is an example you might set in a k8s yaml file:
 ```
@@ -35,7 +35,7 @@ In addition the standard parameters, you will need to set the `OP_NODE_P2P_STATI
 
 For Saigon: `OP_NODE_P2P_STATIC=/ip4/34.187.134.72/tcp/9222/p2p/16Uiu2HAmFyGhL6G7CRgc77zmEeWAdBJA2vFsY9LSYzJQfnCrpWUW`
 
-For Ronin: `OP_NODE_P2P_STATIC=[tbd]`
+For Ronin: `OP_NODE_P2P_STATIC=/ip4/34.11.218.92/tcp/9222/p2p/16Uiu2HAm2wpj12oJjJJS3EwkpCMMJBw5FvbKivQLLC9TzMmh456G`
 
 You will also need to set the `NETWORK=[saigon|ronin]` environment variable, depending on which network you are running the image for. For Saigon select `saigon`, for ronin mainnet select `ronin`.
 
