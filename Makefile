@@ -1,4 +1,4 @@
-.PHONY: help setup build-reth build-op-node start-reth start-op-node stop-reth stop-op-node logs-reth logs-op-node status-op-node
+.PHONY: help setup build-reth build-op-node start-reth start-op-node stop-reth stop-op-node logs-reth logs-op-node status
 
 COMPOSE_FILE ?= docker-compose.yml
 ENV_FILE ?= .env
@@ -23,7 +23,7 @@ help:
 	@echo "  stop-op-node  Stop only op-node service"
 	@echo "  logs-reth     Tail reth logs"
 	@echo "  logs-op-node  Tail op-node logs"
-	@echo "  status-op-node Query optimism_syncStatus from op-node RPC"
+	@echo "  status        sync status"
 
 setup:
 	@./scripts/preflight.sh $(ENV_FILE)
@@ -55,5 +55,5 @@ logs-reth:
 logs-op-node:
 	@$(COMPOSE) logs -f --tail=200 op-node
 
-status-op-node:
+status:
 	@./scripts/status-op-node.sh $(ENV_FILE)

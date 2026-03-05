@@ -43,7 +43,7 @@ If reth is not ready, `start-op-node` exits with a clear message.
 ```bash
 make logs-reth
 make logs-op-node
-make status-op-node
+make status
 make stop-op-node
 make stop-reth
 ```
