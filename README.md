@@ -60,7 +60,8 @@ cp .env.example .env
 ```
 
 Set these in your env file:
-
+- `DATADIR`
+- `NETWORK` (saigon or ronin)
 - `OP_NODE_L1_ETH_RPC`
 - `OP_NODE_L1_BEACON`
 - `EIGENDA_DIRECTORY`
