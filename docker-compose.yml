@@ -1,4 +1,27 @@
 services:
+  eigenda-proxy:
+    container_name: ronin-eigenda-proxy
+    image: ghcr.io/layr-labs/eigenda-proxy:${EIGENDA_PROXY_VERSION:-2.4.1}
+    environment:
+      - EIGENDA_DIRECTORY=${EIGENDA_DIRECTORY}
+      - EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR=${EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR}
+      - EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE=${EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE}
+      - EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND=${EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND}
+      - EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC=${EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC}
+    ports:
+      - "${EIGENDA_PROXY_PORT:-3100}:3100"
+    command:
+      - "--addr=0.0.0.0"
+      - "--port=3100"
+      - "--apis.enabled=op-generic,metrics"
+      - "--eigenda.v2.eth-rpc=${OP_NODE_L1_ETH_RPC}"
+      - "--eigenda.v2.eigenda-directory=${EIGENDA_DIRECTORY}"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3100/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
   execution:
     container_name: ronin-reth
     build:
@@ -34,6 +57,7 @@ services:
       dockerfile: Dockerfile.op-node
     depends_on:
       - execution
+      - eigenda-proxy
     environment:
       - NETWORK=${NETWORK}
       - OP_NODE_P2P_STATIC=${OP_NODE_P2P_STATIC}
@@ -56,5 +80,9 @@ services:
       - "--metrics.enabled"
       - "--metrics.addr=0.0.0.0"
       - "--metrics.port=7300"
+      - "--sequencer.enabled=false"
+      - "--verifier.l1-confs=4"
+      - "--altda.enabled=true"
+      - "--altda.da-server=${OP_NODE_ALTDA_DA_SERVER:-http://eigenda-proxy:3100}"
     volumes:
       - ${DATADIR:-./datadir}/jwt.hex:/jwt/jwt.hex

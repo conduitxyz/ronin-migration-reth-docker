@@ -49,7 +49,59 @@ env:
 args:
 - --l1=<your-ethereum-L1-rpc> --l2=http://localhost:9551 --l2.jwt-secret=/path/to/jwt.hex --rpc.addr=0.0.0.0 --rpc.port=7000 --l1.beacon=<your-beacon-node-http-endpoint>
 ```
+## Quick start
 
+1. Copy env template and fill required L1 endpoints:
+
+Use `.env.example` directly, or copy it to a local file:
+
+```bash
+cp .env.example .env.local
+```
+
+Set these in your env file:
+
+- `OP_NODE_L1_ETH_RPC`
+- `OP_NODE_L1_BEACON`
+- `EIGENDA_DIRECTORY`
+- `EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR`
+- `EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC`
+- `EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE=V2`
+- `EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND=V2`
+
+2. Run preflight:
+
+```bash
+make setup
+# or: make setup ENV_FILE=.env.local
+```
+
+3. Start execution (reth) first:
+
+```bash
+make start-reth
+```
+
+4. Start op-node (this auto-starts EigenDA proxy first):
+
+```bash
+make start-op-node
+```
+
+If reth or eigenda-proxy is not ready, `start-op-node` exits with a clear message.
+You can still run `make start-eigenda-proxy` manually for debugging.
+
+## Useful commands
+
+```bash
+make logs-reth
+make logs-eigenda-proxy
+make logs-op-node
+make status
+make stop-op-node
+make stop-eigenda-proxy
+make stop-reth
+```
 ## Resource specifications
 Testnet:
 

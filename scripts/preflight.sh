@@ -3,11 +3,11 @@ set -euo pipefail
 
 ENV_FILE="${1:-.env}"
 
-if [[ ! -f "$ENV_FILE" ]]; then
+  if [[ ! -f "$ENV_FILE" ]]; then
   if [[ -f ".env.example" ]]; then
     cp .env.example "$ENV_FILE"
     echo "Created $ENV_FILE from .env.example"
-    echo "Fill OP_NODE_L1_ETH_RPC and OP_NODE_L1_BEACON, then rerun make setup."
+    echo "Fill required L1/EigenDA env vars, then rerun make setup."
   else
     echo "Missing $ENV_FILE and .env.example"
   fi
@@ -19,7 +19,17 @@ set -a
 source "$ENV_FILE"
 set +a
 
-required=(NETWORK DATADIR RETH_SEQUENCER_URL OP_NODE_P2P_STATIC OP_NODE_L1_ETH_RPC OP_NODE_L1_BEACON)
+required=(
+  NETWORK
+  DATADIR
+  RETH_SEQUENCER_URL
+  OP_NODE_P2P_STATIC
+  OP_NODE_L1_ETH_RPC
+  OP_NODE_L1_BEACON
+  EIGENDA_DIRECTORY
+  EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR
+  EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC
+)
 missing=()
 for key in "${required[@]}"; do
   if [[ -z "${!key:-}" ]]; then
@@ -29,6 +39,16 @@ done
 
 if (( ${#missing[@]} > 0 )); then
   echo "Missing required env vars in $ENV_FILE: ${missing[*]}"
+  exit 1
+fi
+
+if [[ "${EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE}" != "V2" ]]; then
+  echo "EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE must be V2"
+  exit 1
+fi
+
+if [[ "${EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND}" != "V2" ]]; then
+  echo "EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND must be V2"
   exit 1
 fi
 
