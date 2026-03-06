@@ -10,7 +10,6 @@ services:
     ports:
       - "${RETH_HTTP_PORT:-8545}:8545"
       - "${RETH_WS_PORT:-8546}:8546"
-      - "${RETH_AUTHRPC_PORT:-9551}:9551"
     command:
       - "--rollup.sequencer=${RETH_SEQUENCER_URL}"
       - "--http"
@@ -39,7 +38,7 @@ services:
       - NETWORK=${NETWORK}
       - OP_NODE_P2P_STATIC=${OP_NODE_P2P_STATIC}
     ports:
-      - "${OP_NODE_RPC_PORT:-7000}:7000"
+      - "${OP_NODE_RPC_PORT:-7545}:7545"
       - "${OP_NODE_P2P_PORT:-9222}:9222"
       - "${OP_NODE_P2P_PORT:-9222}:9222/udp"
     command:
@@ -47,7 +46,7 @@ services:
       - "--l2=http://execution:9551"
       - "--l2.jwt-secret=/jwt/jwt.hex"
       - "--rpc.addr=0.0.0.0"
-      - "--rpc.port=7000"
+      - "--rpc.port=7545"
       - "--l1.beacon=${OP_NODE_L1_BEACON}"
       - "--p2p.listen.ip=0.0.0.0"
       - "--p2p.listen.tcp=9222"
