@@ -1,8 +1,7 @@
 .PHONY: help preflight setup build-reth build-op-node start-reth start-eigenda-proxy start-op-node stop-reth stop-eigenda-proxy stop-op-node stop-all logs-reth logs-eigenda-proxy logs-op-node status
 
 COMPOSE_FILE ?= docker-compose.yml
-ENV_FILE ?= .env
-COMPOSE = docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE)
+COMPOSE = docker compose --env-file .env -f $(COMPOSE_FILE)
 
 help:
 	@echo "Ronin migration workflow"
@@ -31,7 +30,7 @@ help:
 	@echo "  status        sync status"
 
 preflight:
-	@./scripts/preflight.sh $(ENV_FILE)
+	@./scripts/preflight.sh
 
 setup: preflight build-reth build-op-node
 
@@ -50,7 +49,7 @@ start-eigenda-proxy: preflight
 	@echo "eigenda-proxy started. watch logs with: make logs-eigenda-proxy"
 
 start-op-node: preflight
-	@./scripts/check-reth-readiness.sh $(ENV_FILE)
+	@./scripts/check-reth-readiness.sh
 	@$(COMPOSE) up -d eigenda-proxy
 	@$(COMPOSE) up -d op-node
 	@echo "op-node started. watch logs with: make logs-op-node"
@@ -76,4 +75,4 @@ logs-op-node:
 	@$(COMPOSE) logs -f --tail=200 op-node
 
 status:
-	@./scripts/status-op-node.sh $(ENV_FILE)
+	@./scripts/status-op-node.sh

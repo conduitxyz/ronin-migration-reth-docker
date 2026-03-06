@@ -1,22 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ENV_FILE="${1:-.env}"
-
-  if [[ ! -f "$ENV_FILE" ]]; then
+if [[ ! -f ".env" ]]; then
   if [[ -f ".env.example" ]]; then
-    cp .env.example "$ENV_FILE"
-    echo "Created $ENV_FILE from .env.example"
+    cp .env.example .env
+    echo "Created .env from .env.example"
     echo "Fill required L1/EigenDA env vars, then rerun make setup."
   else
-    echo "Missing $ENV_FILE and .env.example"
+    echo "Missing .env and .env.example"
   fi
   exit 1
 fi
 
 set -a
-# shellcheck disable=SC1090
-source "$ENV_FILE"
+source .env
 set +a
 
 required=(
@@ -38,7 +35,7 @@ for key in "${required[@]}"; do
 done
 
 if (( ${#missing[@]} > 0 )); then
-  echo "Missing required env vars in $ENV_FILE: ${missing[*]}"
+  echo "Missing required env vars in .env: ${missing[*]}"
   exit 1
 fi
 
@@ -70,4 +67,4 @@ if [[ ! -f "$JWT_PATH" ]]; then
   echo "Created $JWT_PATH"
 fi
 
-echo "Preflight OK ($ENV_FILE)"
+echo "Preflight OK (.env)"

@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ENV_FILE="${1:-.env}"
-if [[ ! -f "$ENV_FILE" ]]; then
-  echo "Missing $ENV_FILE"
+if [[ ! -f ".env" ]]; then
+  echo "Missing .env"
   exit 1
 fi
 
@@ -13,8 +12,7 @@ if ! command -v jq >/dev/null 2>&1; then
 fi
 
 set -a
-# shellcheck disable=SC1090
-source "$ENV_FILE"
+source .env
 set +a
 
 RPC_URL="${OP_NODE_RPC:-http://localhost:${OP_NODE_RPC_PORT:-7000}}"
