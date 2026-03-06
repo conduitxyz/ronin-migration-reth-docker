@@ -1,4 +1,4 @@
-.PHONY: help preflight setup build-reth build-op-node start-reth start-eigenda-proxy start-op-node stop-reth stop-eigenda-proxy stop-op-node logs-reth logs-eigenda-proxy logs-op-node status
+.PHONY: help preflight setup build-reth build-op-node start-reth start-eigenda-proxy start-op-node stop-reth stop-eigenda-proxy stop-op-node stop-all logs-reth logs-eigenda-proxy logs-op-node status
 
 COMPOSE_FILE ?= docker-compose.yml
 ENV_FILE ?= .env
@@ -24,6 +24,7 @@ help:
 	@echo "  stop-reth     Stop only reth service"
 	@echo "  stop-eigenda-proxy Stop only eigenda-proxy service"
 	@echo "  stop-op-node  Stop only op-node service"
+	@echo "  stop-all      Stop reth -> eigenda-proxy -> op-node"
 	@echo "  logs-reth     Tail reth logs"
 	@echo "  logs-eigenda-proxy Tail eigenda-proxy logs"
 	@echo "  logs-op-node  Tail op-node logs"
@@ -62,6 +63,8 @@ stop-eigenda-proxy:
 
 stop-op-node:
 	@$(COMPOSE) stop op-node
+
+stop-all: stop-reth stop-eigenda-proxy stop-op-node
 
 logs-reth:
 	@$(COMPOSE) logs -f --tail=200 execution

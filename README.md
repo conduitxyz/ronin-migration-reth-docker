@@ -56,7 +56,7 @@ args:
 Use `.env.example` directly, or copy it to a local file:
 
 ```bash
-cp .env.example .env.local
+cp .env.example .env
 ```
 
 Set these in your env file:
@@ -73,7 +73,6 @@ Set these in your env file:
 
 ```bash
 make setup
-# or: make setup ENV_FILE=.env.local
 ```
 
 3. Start execution (reth) first:
@@ -98,6 +97,7 @@ make logs-reth
 make logs-eigenda-proxy
 make logs-op-node
 make status
+make stop-all
 make stop-op-node
 make stop-eigenda-proxy
 make stop-reth
