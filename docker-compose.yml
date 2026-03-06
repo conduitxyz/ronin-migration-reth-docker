@@ -2,6 +2,7 @@ services:
   eigenda-proxy:
     container_name: ronin-eigenda-proxy
     image: ghcr.io/layr-labs/eigenda-proxy:${EIGENDA_PROXY_VERSION:-2.4.1}
+    platform: linux/amd64
     environment:
       - EIGENDA_DIRECTORY=${EIGENDA_DIRECTORY}
       - EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR=${EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR}
@@ -16,11 +17,6 @@ services:
       - "--apis.enabled=op-generic,metrics"
       - "--eigenda.v2.eth-rpc=${OP_NODE_L1_ETH_RPC}"
       - "--eigenda.v2.eigenda-directory=${EIGENDA_DIRECTORY}"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3100/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
   execution:
     container_name: ronin-reth

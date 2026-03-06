@@ -1,4 +1,4 @@
-.PHONY: help setup build-reth build-op-node start-reth start-eigenda-proxy start-op-node stop-reth stop-eigenda-proxy stop-op-node logs-reth logs-eigenda-proxy logs-op-node status
+.PHONY: help preflight setup build-reth build-op-node start-reth start-eigenda-proxy start-op-node stop-reth stop-eigenda-proxy stop-op-node logs-reth logs-eigenda-proxy logs-op-node status
 
 COMPOSE_FILE ?= docker-compose.yml
 ENV_FILE ?= .env
@@ -14,11 +14,12 @@ help:
 	@echo "  make start-op-node"
 	@echo ""
 	@echo "Targets:"
-	@echo "  setup         Validate env + prereqs and generate jwt.hex if missing"
+	@echo "  setup         Run preflight and build all images"
+	@echo "  preflight     Validate env + prereqs and generate jwt.hex if missing"
 	@echo "  build-reth    Build reth image"
 	@echo "  build-op-node Build op-node image"
 	@echo "  start-reth    Start only reth service"
-	@echo "  start-op-node Auto-start eigenda-proxy, then start op-node (fails fast on readiness checks)"
+	@echo "  start-op-node Auto-start eigenda-proxy, then start op-node"
 	@echo "  start-eigenda-proxy Optional manual start for eigenda-proxy"
 	@echo "  stop-reth     Stop only reth service"
 	@echo "  stop-eigenda-proxy Stop only eigenda-proxy service"
@@ -28,27 +29,28 @@ help:
 	@echo "  logs-op-node  Tail op-node logs"
 	@echo "  status        sync status"
 
-setup:
+preflight:
 	@./scripts/preflight.sh $(ENV_FILE)
 
-build-reth: setup
+setup: preflight build-reth build-op-node
+
+build-reth: preflight
 	@$(COMPOSE) build execution
 
-build-op-node: setup
+build-op-node: preflight
 	@$(COMPOSE) build op-node
 
-start-reth: setup
+start-reth: preflight
 	@$(COMPOSE) up -d execution
 	@echo "reth started. watch logs with: make logs-reth"
 
-start-eigenda-proxy: setup
+start-eigenda-proxy: preflight
 	@$(COMPOSE) up -d eigenda-proxy
 	@echo "eigenda-proxy started. watch logs with: make logs-eigenda-proxy"
 
-start-op-node: setup
+start-op-node: preflight
 	@./scripts/check-reth-readiness.sh $(ENV_FILE)
 	@$(COMPOSE) up -d eigenda-proxy
-	@./scripts/check-eigenda-proxy-readiness.sh $(ENV_FILE)
 	@$(COMPOSE) up -d op-node
 	@echo "op-node started. watch logs with: make logs-op-node"
 
