@@ -64,11 +64,20 @@ Set these in your env file:
 - `NETWORK` (saigon or ronin)
 - `OP_NODE_L1_ETH_RPC`
 - `OP_NODE_L1_BEACON`
-- `EIGENDA_DIRECTORY`
-- `EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR`
-- `EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC`
 - `EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE=V2`
 - `EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND=V2`
+
+`make setup` writes these EigenDA values into `.env` from `NETWORK`:
+- `saigon`
+  - `EIGENDA_DIRECTORY=0x9620dC4B3564198554e4D2b06dEFB7A369D90257`
+  - `EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR=0x17ec4112c4BbD540E2c1fE0A49D264a280176F0D`
+  - `EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC=disperser-testnet-sepolia.eigenda.xyz:443`
+- `ronin`
+  - `EIGENDA_DIRECTORY=0x64AB2e9A86FA2E183CB6f01B2D4050c1c2dFAad4`
+  - `EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR=0x1be7258230250Bc6a4548F8D59d576a87D216C12`
+  - `EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC=disperser.eigenda.xyz:443`
+
+If you change `NETWORK`, rerun `make setup` to refresh those values.
 
 2. Run preflight:
 
@@ -129,7 +138,7 @@ If you run into issues, try deleting the persistent data in your `--datadir` dir
 
 ### Finalized head will not advance
 
-Because this chain uses AltDA (EigenDA), the `finalized_l2` block reported by op-node will not increase. This is a known issue with vanilla op-node when operating on AltDA chains.
+Since the chain switched from ETH DA to AltDA (EigenDA), the `finalized_l2` block reported by op-node will not increase. This is a known issue with vanilla op-node when operating on AltDA chains.
 
 Operators that depend on finalized head (e.g. for withdrawal processing, health checks, or downstream services that gate on finality) should be aware of this and use `safe_l2` or `unsafe_l2` as appropriate for their use case.
 
