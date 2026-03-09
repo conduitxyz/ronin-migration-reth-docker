@@ -9,7 +9,7 @@ We expect the testnet migration to take ~3 hours, and the mainnet migration to t
 ## Ronin-specific configuration parameters
 
 ### Reth
-Set the environment variable `DATADIR` to the same `--datadir` parameter you would pass into reth. This sets the datadir path for the initial state import.
+For this Docker Compose setup, set `DATADIR` to the host directory you want Docker to mount into the reth container, for example `./datadir`. Inside the container, that directory is mounted at `/data`, and reth uses `/data` as its `--datadir` path for the initial state import.
 
 You will also need to set the `NETWORK=[saigon|ronin]` environment variable, depending on which network you are running the image for. For Saigon select `saigon`, for ronin mainnet select `ronin`.
 
@@ -60,7 +60,7 @@ cp .env.example .env
 ```
 
 Set these in your env file:
-- `DATADIR`
+- `DATADIR` as a host path, for example `./datadir` (mounted to `/data` inside the `execution` container)
 - `NETWORK` (saigon or ronin)
 - `OP_NODE_L1_ETH_RPC`
 - `OP_NODE_L1_BEACON`
