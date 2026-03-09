@@ -125,6 +125,14 @@ Disk: 800Gi
 
 If you run into issues, try deleting the persistent data in your `--datadir` directory and restart the reth container image.
 
+## Known Limitations
+
+### Finalized head will not advance
+
+Because this chain uses AltDA (EigenDA), the `finalized_l2` block reported by op-node will not increase. This is a known issue with vanilla op-node when operating on AltDA chains.
+
+Operators that depend on finalized head (e.g. for withdrawal processing, health checks, or downstream services that gate on finality) should be aware of this and use `safe_l2` or `unsafe_l2` as appropriate for their use case.
+
 ## Rolling your own
 If you'd like to roll your own images, the appropriate files will be available under:
 

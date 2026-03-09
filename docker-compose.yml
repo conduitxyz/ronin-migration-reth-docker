@@ -1,7 +1,7 @@
 services:
   eigenda-proxy:
     container_name: ronin-eigenda-proxy
-    image: ghcr.io/layr-labs/eigenda-proxy:${EIGENDA_PROXY_VERSION:-2.4.1}
+    image: ghcr.io/layr-labs/eigenda-proxy:${EIGENDA_PROXY_VERSION:-2.7.0}
     platform: linux/amd64
     environment:
       - EIGENDA_DIRECTORY=${EIGENDA_DIRECTORY}
