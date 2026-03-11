@@ -75,4 +75,4 @@ logs-op-node:
 	@$(COMPOSE) logs -f --tail=200 op-node
 
 status:
-	@./scripts/status-op-node.sh
+	@./scripts/sync-status.sh

@@ -3,6 +3,7 @@ services:
     container_name: ronin-eigenda-proxy
     image: ghcr.io/layr-labs/eigenda-proxy:${EIGENDA_PROXY_VERSION:-2.7.0}
     platform: linux/amd64
+    restart: unless-stopped
     environment:
       - EIGENDA_DIRECTORY=${EIGENDA_DIRECTORY}
       - EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR=${EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR}
@@ -23,6 +24,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.reth
+    restart: unless-stopped
     environment:
       - DATADIR=/data
       - NETWORK=${NETWORK}
@@ -51,6 +53,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.op-node
+    restart: unless-stopped
     depends_on:
       - execution
       - eigenda-proxy
