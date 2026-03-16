@@ -9,7 +9,7 @@ We expect the testnet migration to take ~3 hours, and the mainnet migration to t
 ## Ronin-specific configuration parameters
 
 ### Reth
-Set the environment variable `DATADIR` to the same `--datadir` parameter you would pass into reth. This sets the datadir path for the initial state import.
+For this Docker Compose setup, set `DATADIR` to the host directory you want Docker to mount into the reth container, for example `./datadir`. Inside the container, that directory is mounted at `/data`, and reth uses `/data` as its `--datadir` path for the initial state import.
 
 You will also need to set the `NETWORK=[saigon|ronin]` environment variable, depending on which network you are running the image for. For Saigon select `saigon`, for ronin mainnet select `ronin`.
 
@@ -49,7 +49,59 @@ env:
 args:
 - --l1=<your-ethereum-L1-rpc> --l2=http://localhost:9551 --l2.jwt-secret=/path/to/jwt.hex --rpc.addr=0.0.0.0 --rpc.port=7000 --l1.beacon=<your-beacon-node-http-endpoint>
 ```
+## Quick start
 
+1. Copy env template and fill required L1 endpoints:
+
+Use `.env.example` directly, or copy it to a local file:
+
+```bash
+cp .env.example .env
+```
+
+Set these in your env file:
+- `DATADIR` as a host path, for example `./datadir` (mounted to `/data` inside the `execution` container)
+- `NETWORK` (saigon or ronin)
+- `OP_NODE_L1_ETH_RPC`
+- `OP_NODE_L1_BEACON`
+- `EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE=V2`
+- `EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND=V2`
+
+If you change `NETWORK`, rerun `make setup` to refresh those values.
+
+2. Run preflight:
+
+```bash
+make setup
+```
+
+3. Start execution (reth) first:
+
+```bash
+make start-reth
+```
+
+4. Start op-node (this auto-starts EigenDA proxy first):
+
+```bash
+make start-op-node
+```
+
+If reth or eigenda-proxy is not ready, `start-op-node` exits with a clear message.
+You can still run `make start-eigenda-proxy` manually for debugging.
+
+## Useful commands
+
+```bash
+make logs-reth
+make logs-eigenda-proxy
+make logs-op-node
+make status
+make stop-all
+make stop-op-node
+make stop-eigenda-proxy
+make stop-reth
+```
 ## Resource specifications
 Testnet:
 

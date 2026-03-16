@@ -1,0 +1,87 @@
+services:
+  eigenda-proxy:
+    container_name: ronin-eigenda-proxy
+    image: ghcr.io/layr-labs/eigenda-proxy:${EIGENDA_PROXY_VERSION:-2.7.0}
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      - EIGENDA_DIRECTORY=${EIGENDA_DIRECTORY}
+      - EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR=${EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR}
+      - EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE=${EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE}
+      - EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND=${EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND}
+      - EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC=${EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC}
+    ports:
+      - "${EIGENDA_PROXY_PORT:-3100}:3100"
+    command:
+      - "--addr=0.0.0.0"
+      - "--port=3100"
+      - "--apis.enabled=op-generic,metrics"
+      - "--eigenda.v2.eth-rpc=${OP_NODE_L1_ETH_RPC}"
+      - "--eigenda.v2.eigenda-directory=${EIGENDA_DIRECTORY}"
+
+  execution:
+    container_name: ronin-reth
+    build:
+      context: .
+      dockerfile: Dockerfile.reth
+    restart: unless-stopped
+    environment:
+      - DATADIR=/data
+      - NETWORK=${NETWORK}
+    ports:
+      - "${RETH_HTTP_PORT:-8545}:8545"
+      - "${RETH_WS_PORT:-8546}:8546"
+    command:
+      - "--rollup.sequencer=${RETH_SEQUENCER_URL}"
+      - "--http"
+      - "--http.addr=0.0.0.0"
+      - "--http.port=8545"
+      - "--http.api=admin,debug,eth,net,trace,txpool,web3"
+      - "--ws"
+      - "--ws.addr=0.0.0.0"
+      - "--ws.port=8546"
+      - "--ws.origins=*"
+      - "--authrpc.addr=0.0.0.0"
+      - "--authrpc.port=9551"
+      - "--authrpc.jwtsecret=/jwt/jwt.hex"
+    volumes:
+      - ${DATADIR:-./datadir}:/data
+      - ${DATADIR:-./datadir}/jwt.hex:/jwt/jwt.hex
+
+  op-node:
+    container_name: ronin-op-node
+    build:
+      context: .
+      dockerfile: Dockerfile.op-node
+    restart: unless-stopped
+    depends_on:
+      - execution
+      - eigenda-proxy
+    environment:
+      - NETWORK=${NETWORK}
+      - OP_NODE_P2P_STATIC=${OP_NODE_P2P_STATIC}
+    ports:
+      - "${OP_NODE_RPC_PORT:-7545}:7545"
+      - "${OP_NODE_P2P_PORT:-9222}:9222"
+      - "${OP_NODE_P2P_PORT:-9222}:9222/udp"
+    command:
+      - "--l1=${OP_NODE_L1_ETH_RPC}"
+      - "--l2=http://execution:9551"
+      - "--l2.jwt-secret=/jwt/jwt.hex"
+      - "--rpc.addr=0.0.0.0"
+      - "--rpc.port=7545"
+      - "--l1.beacon=${OP_NODE_L1_BEACON}"
+      - "--p2p.listen.ip=0.0.0.0"
+      - "--p2p.listen.tcp=9222"
+      - "--p2p.listen.udp=9222"
+      - "--p2p.static=${OP_NODE_P2P_STATIC}"
+      - "--rpc.enable-admin"
+      - "--metrics.enabled"
+      - "--metrics.addr=0.0.0.0"
+      - "--metrics.port=7300"
+      - "--sequencer.enabled=false"
+      - "--verifier.l1-confs=4"
+      - "--altda.enabled=true"
+      - "--altda.da-server=${OP_NODE_ALTDA_DA_SERVER:-http://eigenda-proxy:3100}"
+    volumes:
+      - ${DATADIR:-./datadir}/jwt.hex:/jwt/jwt.hex

@@ -4,7 +4,7 @@ FROM ubuntu:latest
 
 COPY --from=opnode /usr/local/bin/op-node /usr/local/bin/
 
-RUN apt update && apt install curl zstd -y
+RUN apt update && apt install curl zstd jq -y
 # Copy the check_sync_status.sh script into the container
 COPY download-consensus-layer-files.sh /usr/local/bin/download-consensus-layer-files.sh
 

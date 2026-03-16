@@ -20,4 +20,13 @@ while true; do
   sleep "$INTERVAL"
 done
 
+echo "Ensuring EigenDA alt_da config is present in rollup.json..."
+jq '.alt_da = {
+  "da_commitment_type": "GenericCommitment",
+  "da_challenge_contract_address": "0x0000000000000000000000000000000000000000",
+  "da_challenge_window": 1,
+  "da_resolve_window": 1
+}' rollup.json > rollup.json.tmp
+mv rollup.json.tmp rollup.json
+
 OP_NODE_ROLLUP_CONFIG=rollup.json op-node "$@"
