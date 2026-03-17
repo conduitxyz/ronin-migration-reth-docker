@@ -6,6 +6,16 @@ Note that you will need to run a consensus-layer client to power reth, typically
 
 We expect the testnet migration to take ~3 hours, and the mainnet migration to take ~7 hours.
 
+## Component Versions
+
+| Component | Version |
+| --- | --- |
+| reth (execution) | `ghcr.io/conduitxyz/conduit-op-reth:v1.0.0-rc.1` |
+| op-node | `us-docker.pkg.dev/oplabs-tools-artifacts/images/op-node:v1.16.5` |
+| eigenda-proxy | `ghcr.io/layr-labs/eigenda-proxy:2.7.0` |
+
+The execution client uses Conduit's custom `conduit-op-reth` build rather than stock upstream `op-reth`.
+
 ## Ronin-specific configuration parameters
 
 ### Reth
