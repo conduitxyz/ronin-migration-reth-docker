@@ -1,6 +1,6 @@
-# Ronin Migration Docker Images (op-reth, op-node)
+# Ronin Migration Docker Images (op-reth, op-node, eigenda-proxy)
 
-Dockerfiles that can be used to run a reth node for the Ronin L1 -> L2 migration. This can be run as a typical reth node, with some extra parameters for the migration.
+Dockerfiles that can be used to run a reth node for the Ronin L1 -> L2 migration. This setup runs reth from a snapshot, alongside `op-node` and `eigenda-proxy`.
 
 Note that you will need to run a consensus-layer client to power reth, typically `op-node`. Docs for running `op-node` are here: https://docs.optimism.io/node-operators/guides/configuration/consensus-clients. We also include an `op-node` that should be used.
 
@@ -10,6 +10,8 @@ We expect the testnet migration to take ~3 hours, and the mainnet migration to t
 
 ### Reth
 For this Docker Compose setup, set `DATADIR` to the host directory you want Docker to mount into the reth container, for example `./datadir`. Inside the container, that directory is mounted at `/data`, and reth uses `/data` as its `--datadir` path.
+
+This setup assumes reth starts from a snapshot. The final datadir layout should contain snapshot files directly under `${DATADIR}`.
 
 You will also need to set the `NETWORK=[saigon|ronin]` environment variable, depending on which network you are running the image for. For Saigon select `saigon`, for ronin mainnet select `ronin`.
 
@@ -30,6 +32,8 @@ args:
 
 ### Op-node
 The rollup.json file with automatically be downloaded, and environmental variable set, so no need to set the `--rollup.config` flag.
+
+`op-node` depends on `eigenda-proxy` for the configured alt-DA path in this setup. `make start-op-node` auto-starts `eigenda-proxy` first, and you can still run `make start-eigenda-proxy` manually for debugging.
 
 In addition the standard parameters, you will need to set the `OP_NODE_P2P_STATIC` variable.
 
@@ -69,37 +73,36 @@ Set these in your env file:
 
 If you change `NETWORK`, rerun `make setup` to refresh those values and rebuild the images.
 
-2. Run preflight and rebuild the images:
+2. Prepare `DATADIR` with the snapshot contents.
+
+If you are preparing the snapshot manually instead of relying on the container entrypoint, use:
+
+```bash
+mkdir -p ./datadir && gsutil cp gs://conduit-networks-snapshots/saigon-testnet-cc58e966ql/latest.tar - | tar -xvf - -C ./datadir --strip-components=1
+```
+
+
+3. Run preflight and rebuild the images:
 
 ```bash
 make setup
 ```
 
-The reth container now uses the snapshot bootstrap path. On first start, it downloads the Saigon snapshot into `DATADIR`, strips the top-level `mnt/` directory from the archive, downloads `genesis.json` into `DATADIR`, and then starts `op-reth` directly. If `DATADIR/db/mdbx.dat` already exists, the snapshot download is skipped.
+`make start-reth` starts the reth container, which runs `download-snapshot.sh` as its entrypoint. That script uses `DATADIR/genesis.json` as the chain file and can be used together with a snapshot-backed `DATADIR`.
 
-The final datadir layout should have snapshot files directly under `DATADIR`, for example:
-- `DATADIR/db/...`
-- `DATADIR/static_files/...`
-- `DATADIR/blobstore/...`
-- `DATADIR/invalid_block_hooks/...`
-- `DATADIR/reth.toml`
-- `DATADIR/genesis.json`
-- `DATADIR/jwt.hex`
-
-3. Start execution (reth) first:
+4. Start execution (reth) first:
 
 ```bash
 make start-reth
 ```
 
-4. Start op-node (this auto-starts EigenDA proxy first):
+5. Start op-node (this auto-starts EigenDA proxy first):
 
 ```bash
 make start-op-node
 ```
 
-If reth or eigenda-proxy is not ready, `start-op-node` exits with a clear message.
-You can still run `make start-eigenda-proxy` manually for debugging.
+If reth or eigenda-proxy is not ready, `start-op-node` exits with a clear message. You can still run `make start-eigenda-proxy` manually for debugging.
 
 ## Useful commands
 
@@ -135,6 +138,8 @@ Disk: 800Gi
 
 If you run into issues, try deleting the persistent data in your `--datadir` directory and restart the reth container image.
 
+If your snapshot or backup extracts into `DATADIR/mnt/...`, flatten it so the contents of `mnt` become the direct children of `DATADIR`. Reth should see `DATADIR/db/mdbx.dat`, not `DATADIR/mnt/db/mdbx.dat`.
+
 ## Rolling your own
 If you'd like to roll your own images, the appropriate files will be available under:
 
@@ -146,4 +151,4 @@ https://api.conduit.xyz/file/v1/optimism/genesis/saigon-testnet-cc58e966ql
 https://storage.googleapis.com/conduit-public-dls/${NETWORK}-rollup.json
 
 
-The snapshot archive currently extracts with a top-level `mnt/` directory, so the bootstrap script strips that layer and writes the contents directly into `DATADIR`.
+The snapshot archive may extract with a top-level `mnt/` directory, but the final runtime layout should be flattened into `DATADIR`.
