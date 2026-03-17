@@ -13,7 +13,7 @@ help:
 	@echo "  make start-op-node"
 	@echo ""
 	@echo "Targets:"
-	@echo "  setup         Run preflight and build all images"
+	@echo "  setup         Run preflight and rebuild the images"
 	@echo "  preflight     Validate env + prereqs and generate jwt.hex if missing"
 	@echo "  build-reth    Build reth image"
 	@echo "  build-op-node Build op-node image"

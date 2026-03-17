@@ -1,10 +1,10 @@
-FROM ghcr.io/paradigmxyz/op-reth:v1.9.3
+FROM ghcr.io/conduitxyz/conduit-op-reth:v1.0.0-rc.1
 
 RUN apt update && apt install curl zstd -y
-# Copy the check_sync_status.sh script into the container
-COPY download-migration-files.sh /usr/local/bin/download-migration-files.sh
+# Copy the snapshot entrypoint into the container
+COPY download-snapshot.sh /usr/local/bin/download-snapshot.sh
 
 # Make the script executable
-RUN chmod +x /usr/local/bin/download-migration-files.sh
+RUN chmod +x /usr/local/bin/download-snapshot.sh
 
-ENTRYPOINT ["/usr/local/bin/download-migration-files.sh"]
+ENTRYPOINT ["/usr/local/bin/download-snapshot.sh"]
