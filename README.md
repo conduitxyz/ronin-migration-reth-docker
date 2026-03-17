@@ -9,7 +9,7 @@ We expect the testnet migration to take ~3 hours, and the mainnet migration to t
 ## Ronin-specific configuration parameters
 
 ### Reth
-For this Docker Compose setup, set `DATADIR` to the host directory you want Docker to mount into the reth container, for example `./datadir`. Inside the container, that directory is mounted at `/data`, and reth uses `/data` as its `--datadir` path for the initial state import.
+For this Docker Compose setup, set `DATADIR` to the host directory you want Docker to mount into the reth container, for example `./datadir`. Inside the container, that directory is mounted at `/data`, and reth uses `/data` as its `--datadir` path.
 
 You will also need to set the `NETWORK=[saigon|ronin]` environment variable, depending on which network you are running the image for. For Saigon select `saigon`, for ronin mainnet select `ronin`.
 
@@ -67,13 +67,24 @@ Set these in your env file:
 - `EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE=V2`
 - `EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND=V2`
 
-If you change `NETWORK`, rerun `make setup` to refresh those values.
+If you change `NETWORK`, rerun `make setup` to refresh those values and rebuild the images.
 
-2. Run preflight:
+2. Run preflight and rebuild the images:
 
 ```bash
 make setup
 ```
+
+The reth container now uses the snapshot bootstrap path. On first start, it downloads the Saigon snapshot into `DATADIR`, strips the top-level `mnt/` directory from the archive, downloads `genesis.json` into `DATADIR`, and then starts `op-reth` directly. If `DATADIR/db/mdbx.dat` already exists, the snapshot download is skipped.
+
+The final datadir layout should have snapshot files directly under `DATADIR`, for example:
+- `DATADIR/db/...`
+- `DATADIR/static_files/...`
+- `DATADIR/blobstore/...`
+- `DATADIR/invalid_block_hooks/...`
+- `DATADIR/reth.toml`
+- `DATADIR/genesis.json`
+- `DATADIR/jwt.hex`
 
 3. Start execution (reth) first:
 
@@ -128,15 +139,11 @@ If you run into issues, try deleting the persistent data in your `--datadir` dir
 If you'd like to roll your own images, the appropriate files will be available under:
 
 
-https://storage.googleapis.com/conduit-public-dls/${NETWORK}-state.jsonl.zst
+https://storage.googleapis.com/conduit-networks-snapshots/saigon-testnet-cc58e966ql/latest.tar
 
-https://storage.googleapis.com/conduit-public-dls/${NETWORK}-header.hash
-
-https://storage.googleapis.com/conduit-public-dls/${NETWORK}-header.rlp
-
-https://storage.googleapis.com/conduit-public-dls/${NETWORK}-genesis.json
+https://api.conduit.xyz/file/v1/optimism/genesis/saigon-testnet-cc58e966ql
 
 https://storage.googleapis.com/conduit-public-dls/${NETWORK}-rollup.json
 
 
-Where you can replace ${NETWORK} with [saigon|ronin], depending on which network you are syncing.
+The snapshot archive currently extracts with a top-level `mnt/` directory, so the bootstrap script strips that layer and writes the contents directly into `DATADIR`.
