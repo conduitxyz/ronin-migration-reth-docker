@@ -4,8 +4,6 @@ Dockerfiles that can be used to run a reth node for the Ronin L1 -> L2 migration
 
 Note that you will need to run a consensus-layer client to power reth, typically `op-node`. Docs for running `op-node` are here: https://docs.optimism.io/node-operators/guides/configuration/consensus-clients. We also include an `op-node` that should be used.
 
-We expect the testnet migration to take ~3 hours, and the mainnet migration to take ~7 hours.
-
 ## Component Versions
 
 | Component | Version |
