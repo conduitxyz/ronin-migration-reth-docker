@@ -83,10 +83,18 @@ If you change `NETWORK`, rerun `make setup` to refresh those values and rebuild 
 
 2. Prepare `DATADIR` with the snapshot contents.
 
-If you are preparing the snapshot manually instead of relying on the container entrypoint, use:
+If you are preparing the snapshot manually instead of relying on the container entrypoint, use the command for your network:
+
+Saigon:
 
 ```bash
 mkdir -p ./datadir && gsutil cp gs://conduit-networks-snapshots/saigon-testnet-cc58e966ql/latest.tar - | tar -xvf - -C ./datadir --strip-components=1
+```
+
+Ronin:
+
+```bash
+mkdir -p ./datadir && gsutil cp gs://conduit-networks-snapshots/ronin-mainnet-bfz9fadqzl/latest.tar - | tar -xvf - -C ./datadir --strip-components=1
 ```
 
 
@@ -154,9 +162,13 @@ If you'd like to roll your own images, the appropriate files will be available u
 
 https://storage.googleapis.com/conduit-networks-snapshots/saigon-testnet-cc58e966ql/latest.tar
 
+https://storage.googleapis.com/conduit-networks-snapshots/ronin-mainnet-bfz9fadqzl/latest.tar
+
 https://api.conduit.xyz/file/v1/optimism/genesis/saigon-testnet-cc58e966ql
+
+https://api.conduit.xyz/file/v1/optimism/genesis/ronin-mainnet-bfz9fadqzl
 
 https://storage.googleapis.com/conduit-public-dls/${NETWORK}-rollup.json
 
 
-The snapshot archive may extract with a top-level `mnt/` directory, but the final runtime layout should be flattened into `DATADIR`.
+The snapshot and genesis URLs are selected from `NETWORK` in the entrypoint script. The snapshot archive may extract with a top-level `mnt/` directory, but the final runtime layout should be flattened into `DATADIR`.
