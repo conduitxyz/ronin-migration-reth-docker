@@ -32,8 +32,7 @@ help:
 preflight:
 	@./scripts/preflight.sh
 
-setup: preflight
-	@$(COMPOSE) build execution op-node
+setup: preflight build-reth build-op-node
 
 build-reth: preflight
 	@$(COMPOSE) build execution
