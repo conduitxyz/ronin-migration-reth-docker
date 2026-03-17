@@ -2,15 +2,32 @@
 
 set -euo pipefail
 
-SNAPSHOT_URL="https://storage.googleapis.com/conduit-networks-snapshots/saigon-testnet-cc58e966ql/latest.tar"
-GENESIS_URL="https://api.conduit.xyz/file/v1/optimism/genesis/saigon-testnet-cc58e966ql"
-DB_PATH="${DATADIR:-}/db/mdbx.dat"
-GENESIS_PATH="${DATADIR:-}/genesis.json"
-
 if [[ -z "${DATADIR:-}" ]]; then
   echo "DATADIR must be set"
   exit 1
 fi
+
+case "${NETWORK:-}" in
+  saigon)
+    CONDUIT_SLUG="saigon-testnet-cc58e966ql"
+    ;;
+  ronin)
+    CONDUIT_SLUG="ronin-mainnet-bfz9fadqzl"
+    ;;
+  "")
+    echo "NETWORK must be set"
+    exit 1
+    ;;
+  *)
+    echo "Unsupported NETWORK '${NETWORK}'. Expected one of: saigon, ronin"
+    exit 1
+    ;;
+esac
+
+SNAPSHOT_URL="https://storage.googleapis.com/conduit-networks-snapshots/${CONDUIT_SLUG}/latest.tar"
+GENESIS_URL="https://api.conduit.xyz/file/v1/optimism/genesis/${CONDUIT_SLUG}"
+DB_PATH="${DATADIR}/db/mdbx.dat"
+GENESIS_PATH="${DATADIR}/genesis.json"
 
 mkdir -p "$DATADIR"
 
