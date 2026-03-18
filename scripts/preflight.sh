@@ -33,12 +33,12 @@ load_env
 
 case "${NETWORK:-}" in
   saigon)
-    resolved_eigenda_directory="0x9620dC4B3564198554e4D2b06dEFB7A369D90257"
+    resolved_eigenda_v2_network="sepolia_testnet"
     resolved_verifier_addr="0x17ec4112c4BbD540E2c1fE0A49D264a280176F0D"
     resolved_disperser_rpc="disperser-testnet-sepolia.eigenda.xyz:443"
     ;;
   ronin)
-    resolved_eigenda_directory="0x64AB2e9A86FA2E183CB6f01B2D4050c1c2dFAad4"
+    resolved_eigenda_v2_network="mainnet"
     resolved_verifier_addr="0x1be7258230250Bc6a4548F8D59d576a87D216C12"
     resolved_disperser_rpc="disperser.eigenda.xyz:443"
     ;;
@@ -52,9 +52,10 @@ case "${NETWORK:-}" in
     ;;
 esac
 
-upsert_env_var "EIGENDA_DIRECTORY" "$resolved_eigenda_directory"
+upsert_env_var "EIGENDA_PROXY_EIGENDA_V2_NETWORK" "$resolved_eigenda_v2_network"
 upsert_env_var "EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR" "$resolved_verifier_addr"
 upsert_env_var "EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC" "$resolved_disperser_rpc"
+sed -i.bak '/^EIGENDA_DIRECTORY=/d' .env
 rm -f .env.bak
 load_env
 
