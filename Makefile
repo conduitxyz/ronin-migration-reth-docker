@@ -63,7 +63,7 @@ stop-eigenda-proxy:
 stop-op-node:
 	@$(COMPOSE) stop op-node
 
-stop-all: stop-reth stop-eigenda-proxy stop-op-node
+stop-all: stop-op-node stop-eigenda-proxy  stop-reth 
 
 logs-reth:
 	@$(COMPOSE) logs -f --tail=200 execution
