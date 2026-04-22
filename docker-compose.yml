@@ -59,6 +59,7 @@ services:
     environment:
       - NETWORK=${NETWORK}
       - OP_NODE_P2P_STATIC=${OP_NODE_P2P_STATIC}
+      - OP_NODE_P2P_SYNC_ONLYREQTOSTATIC=${OP_NODE_P2P_SYNC_ONLYREQTOSTATIC}
     ports:
       - "${OP_NODE_RPC_PORT:-7545}:7545"
       - "${OP_NODE_P2P_PORT:-9222}:9222"
@@ -73,7 +74,6 @@ services:
       - "--p2p.listen.ip=0.0.0.0"
       - "--p2p.listen.tcp=9222"
       - "--p2p.listen.udp=9222"
-      - "--p2p.static=${OP_NODE_P2P_STATIC}"
       - "--rpc.enable-admin"
       - "--metrics.enabled"
       - "--metrics.addr=0.0.0.0"
