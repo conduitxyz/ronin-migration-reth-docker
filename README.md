@@ -78,7 +78,11 @@ Set these in your env file:
 - `OP_NODE_L1_BEACON`
 - `EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE=V2`
 - `EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND=V2`
-- `EIGENDA_PROXY_EIGENDA_V2_NETWORK`
+- `EIGENDA_PROXY_EIGENDA_V2_NETWORK=sepolia_testnet # or mainnet`
+
+#### Populated by `make setup` based on NETWORK automatically
+EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR=
+EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC=
 
 If you change `NETWORK`, rerun `make setup` to refresh those values and rebuild the images.
 
