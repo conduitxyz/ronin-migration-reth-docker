@@ -81,8 +81,8 @@ Set these in your env file:
 - `EIGENDA_PROXY_EIGENDA_V2_NETWORK=sepolia_testnet # or mainnet`
 
 #### Populated by `make setup` based on NETWORK automatically
-EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR=
-EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC=
+`EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR`
+`EIGENDA_PROXY_EIGENDA_V2_DISPERSER_RPC`
 
 If you change `NETWORK`, rerun `make setup` to refresh those values and rebuild the images.
 
