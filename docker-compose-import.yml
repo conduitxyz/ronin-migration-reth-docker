@@ -22,7 +22,7 @@ services:
     container_name: ronin-reth
     build:
       context: .
-      dockerfile: Dockerfile.reth
+      dockerfile: Dockerfile.reth-import
     restart: unless-stopped
     environment:
       - DATADIR=/data
