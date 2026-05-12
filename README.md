@@ -63,6 +63,10 @@ args:
 ```
 ## Quick start
 
+## Initial Import
+
+Use the Dockerfile.reth-import image with NETWORK=ronin for ronin mainnet. A snapshot will not exist at migration time. Otherwise, do the following:
+
 1. Copy env template and fill required L1 endpoints:
 
 Use `.env.example` directly, or copy it to a local file:
