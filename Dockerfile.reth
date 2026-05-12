@@ -1,6 +1,6 @@
 FROM ghcr.io/conduitxyz/conduit-op-reth:v1.0.0-rc.1
 
-RUN apt update && apt install curl zstd -y
+RUN apt update && apt install curl zstd jq -y
 # Copy the snapshot entrypoint into the container
 COPY download-snapshot.sh /usr/local/bin/download-snapshot.sh
 

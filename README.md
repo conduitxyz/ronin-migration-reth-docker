@@ -79,6 +79,8 @@ Set these in your env file:
 - `EIGENDA_PROXY_STORAGE_BACKENDS_TO_ENABLE=V2`
 - `EIGENDA_PROXY_STORAGE_DISPERSAL_BACKEND=V2`
 - `EIGENDA_PROXY_EIGENDA_V2_NETWORK=sepolia_testnet # or mainnet`
+- `UPDATE_BEDROCK_BLOCK=true` (optional, default `false`) — overrides `bedrockBlock` in the downloaded `genesis.json` to the network-specific migration block: `45528550` for saigon, `55577500` for ronin. When enabled, set `RETH_HISTORICAL_RPC` to an RPC endpoint that can serve pre-bedrock historical data.
+- `RETH_HISTORICAL_RPC` — RPC URL for pre-bedrock historical block data, used with `--rollup.historicalrpc`
 
 #### Populated by `make setup` based on NETWORK automatically
 - `EIGENDA_PROXY_EIGENDA_V2_CERT_VERIFIER_ROUTER_OR_IMMUTABLE_VERIFIER_ADDR`

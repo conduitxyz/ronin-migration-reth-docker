@@ -67,6 +67,16 @@ if [ ! -f "${DATADIR}/db/static_files" ]; then
     sleep "$INTERVAL"
   done
 
+  if [[ "${UPDATE_BEDROCK_BLOCK:-false}" == "true" ]]; then
+    case "$NETWORK" in
+      saigon) BEDROCK_BLOCK=45528550 ;;
+      ronin)  BEDROCK_BLOCK=55577500 ;;
+    esac
+    echo "Updating bedrockBlock to ${BEDROCK_BLOCK} in genesis.json..."
+    jq --argjson block "$BEDROCK_BLOCK" '.config.bedrockBlock = $block' genesis.json > genesis.json.tmp \
+      && mv genesis.json.tmp genesis.json
+  fi
+
   echo "doing initial state import..."
   op-reth init-state state.jsonl --datadir=$DATADIR --chain=genesis.json --header=header.rlp --header-hash=$(cat header.hash) --without-ovm
 fi;

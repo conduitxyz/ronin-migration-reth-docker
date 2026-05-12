@@ -41,4 +41,14 @@ if [[ ! -f "$GENESIS_PATH" ]]; then
   curl -fL --retry 5 --retry-delay 5 "$GENESIS_URL" -o "$GENESIS_PATH"
 fi
 
+if [[ "${UPDATE_BEDROCK_BLOCK:-false}" == "true" ]]; then
+  case "$NETWORK" in
+    saigon) BEDROCK_BLOCK=45528550 ;;
+    ronin)  BEDROCK_BLOCK=55577500 ;;
+  esac
+  echo "Updating bedrockBlock to ${BEDROCK_BLOCK} in genesis.json..."
+  jq --argjson block "$BEDROCK_BLOCK" '.config.bedrockBlock = $block' "$GENESIS_PATH" > "${GENESIS_PATH}.tmp" \
+    && mv "${GENESIS_PATH}.tmp" "$GENESIS_PATH"
+fi
+
 exec op-reth node --datadir="$DATADIR" --chain="$GENESIS_PATH" "$@"
