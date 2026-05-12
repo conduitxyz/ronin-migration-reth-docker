@@ -1,0 +1,10 @@
+FROM ghcr.io/conduitxyz/conduit-op-reth:v1.0.0-rc.1
+
+RUN apt update && apt install curl zstd jq -y
+# Copy the snapshot entrypoint into the container
+COPY download-snapshot.sh /usr/local/bin/download-migration-files.sh
+
+# Make the script executable
+RUN chmod +x /usr/local/bin/download-migration-files.sh
+
+ENTRYPOINT ["/usr/local/bin/download-migration-files.sh"]
