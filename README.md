@@ -163,6 +163,8 @@ If you run into issues, try deleting the persistent data in your `--datadir` dir
 
 If your snapshot or backup extracts into `DATADIR/mnt/...`, flatten it so the contents of `mnt` become the direct children of `DATADIR`. Reth should see `DATADIR/db/mdbx.dat`, not `DATADIR/mnt/db/mdbx.dat`.
 
+If there is no snapshot available, remove lines 34-37 in download-snapshot.sh
+
 ## Rolling your own
 If you'd like to roll your own images, the appropriate files will be available under:
 
