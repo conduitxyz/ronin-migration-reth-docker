@@ -27,11 +27,13 @@ services:
     environment:
       - DATADIR=/data
       - NETWORK=${NETWORK}
+      - UPDATE_BEDROCK_BLOCK=${UPDATE_BEDROCK_BLOCK:-false}
     ports:
       - "${RETH_HTTP_PORT:-8545}:8545"
       - "${RETH_WS_PORT:-8546}:8546"
     command:
       - "--rollup.sequencer=${RETH_SEQUENCER_URL}"
+      - "--rollup.historicalrpc=${RETH_HISTORICAL_RPC:-}"
       - "--http"
       - "--http.addr=0.0.0.0"
       - "--http.port=8545"
