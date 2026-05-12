@@ -65,7 +65,9 @@ args:
 
 ## Initial Import
 
-Use the Dockerfile.reth-import image with NETWORK=ronin for ronin mainnet. A snapshot will not exist at migration time. Otherwise, do the following:
+Use the Dockerfile.reth-import image with NETWORK=ronin for ronin mainnet. A snapshot will not exist at migration time. Use the docker-compose-import.yml file instead of docker-compose.yml.
+
+Otherwise, do the following:
 
 1. Copy env template and fill required L1 endpoints:
 
