@@ -78,7 +78,7 @@ if [ ! -f "${DATADIR}/db/static_files" ]; then
   fi
 
   echo "doing initial state import..."
-  op-reth init-state state.jsonl --datadir=$DATADIR --chain=genesis.json --header=header.rlp --header-hash=$(cat header.hash) --without-ovm
+  op-reth init-state state.jsonl --datadir=$DATADIR --chain=genesis.json --header=header.rlp --header-hash=$(cat header.hash) --without-evm
 fi;
 
 exec op-reth node --datadir=$DATADIR --chain=genesis.json "$@"
