@@ -1,6 +1,21 @@
 .PHONY: help preflight setup build-reth build-op-node start-reth start-eigenda-proxy start-op-node stop-reth stop-eigenda-proxy stop-op-node stop-all logs-reth logs-eigenda-proxy logs-op-node status
 
-COMPOSE_FILE ?= docker-compose.yml
+ifeq ($(origin SNAPSHOT), undefined)
+SNAPSHOT := $(shell sed -n 's/^SNAPSHOT=//p' .env 2>/dev/null | head -n 1 | tr -d '[:space:]')
+endif
+SNAPSHOT ?= true
+SNAPSHOT := $(strip $(SNAPSHOT))
+
+ifeq ($(origin COMPOSE_FILE), undefined)
+ifeq ($(SNAPSHOT),false)
+COMPOSE_FILE := docker-compose-import.yml
+MODE_NAME := import
+else
+COMPOSE_FILE := docker-compose.yml
+MODE_NAME := snapshot
+endif
+endif
+
 COMPOSE = docker compose --env-file .env -f $(COMPOSE_FILE)
 
 help:
@@ -8,9 +23,9 @@ help:
 	@echo ""
 	@echo "Usage:"
 	@echo "  cp .env.example .env  # first time"
-	@echo "  make setup"
-	@echo "  make start-reth"
-	@echo "  make start-op-node"
+	@echo "  make SNAPSHOT=true setup"
+	@echo "  make SNAPSHOT=true start-reth"
+	@echo "  make SNAPSHOT=false start-reth"
 	@echo ""
 	@echo "Targets:"
 	@echo "  setup         Run preflight and rebuild the images"
@@ -35,12 +50,14 @@ preflight:
 setup: preflight build-reth build-op-node
 
 build-reth: preflight
+	@echo "building execution image with $(COMPOSE_FILE) ($(MODE_NAME) mode)"
 	@$(COMPOSE) build execution
 
 build-op-node: preflight
 	@$(COMPOSE) build op-node
 
 start-reth: preflight
+	@echo "starting reth with $(COMPOSE_FILE) ($(MODE_NAME) mode)"
 	@$(COMPOSE) up -d execution
 	@echo "reth started. watch logs with: make logs-reth"
 
@@ -52,7 +69,7 @@ start-op-node: preflight
 	@./scripts/check-reth-readiness.sh
 	@$(COMPOSE) up -d eigenda-proxy
 	@$(COMPOSE) up -d op-node
-	@echo "op-node started. watch logs with: make logs-op-node"
+	@echo "op-node started with $(COMPOSE_FILE) ($(MODE_NAME) mode). watch logs with: make logs-op-node"
 
 stop-reth:
 	@$(COMPOSE) stop execution
