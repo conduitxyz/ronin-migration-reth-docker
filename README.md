@@ -129,44 +129,26 @@ mkdir -p ./datadir && gsutil cp gs://conduit-networks-snapshots/ronin-mainnet-bf
 4. Run preflight and rebuild the images:
 
 ```bash
-make SNAPSHOT=true setup
+make setup
 ```
 
-For import mode instead:
-
-```bash
-make SNAPSHOT=false setup
-```
-
-`make start-reth` uses the compose file selected by `SNAPSHOT`. In snapshot mode the entrypoint is `download-snapshot.sh`. In import mode the entrypoint is `download-migration-files.sh`.
+`make start-reth` uses the compose file selected by `SNAPSHOT` in `.env`. In snapshot mode the entrypoint is `download-snapshot.sh`. In import mode the entrypoint is `download-migration-files.sh`.
 
 5. Start execution (reth) first:
 
 ```bash
-make SNAPSHOT=true start-reth
-```
-
-For import mode instead:
-
-```bash
-make SNAPSHOT=false start-reth
+make start-reth
 ```
 
 6. Start op-node (this auto-starts EigenDA proxy first):
 
 ```bash
-make SNAPSHOT=true start-op-node
-```
-
-For import mode instead:
-
-```bash
-make SNAPSHOT=false start-op-node
+make start-op-node
 ```
 
 If reth or eigenda-proxy is not ready, `start-op-node` exits with a clear message. You can still run `make start-eigenda-proxy` manually for debugging.
 
-Use the same `SNAPSHOT` value for follow-up commands such as `logs-*` and `stop-*` so `make` targets the same compose file.
+Set `SNAPSHOT` in `.env` before running `make`. Manual `COMPOSE_FILE=...` overrides still work if you need to target a specific compose file directly.
 
 ## Useful commands
 

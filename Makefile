@@ -1,19 +1,22 @@
 .PHONY: help preflight setup build-reth build-op-node start-reth start-eigenda-proxy start-op-node stop-reth stop-eigenda-proxy stop-op-node stop-all logs-reth logs-eigenda-proxy logs-op-node status
 
-ifeq ($(origin SNAPSHOT), undefined)
-SNAPSHOT := $(shell sed -n 's/^SNAPSHOT=//p' .env 2>/dev/null | head -n 1 | tr -d '[:space:]')
-endif
-SNAPSHOT ?= true
-SNAPSHOT := $(strip $(SNAPSHOT))
+# Read SNAPSHOT from .env for compose selection.
+override SNAPSHOT := $(strip $(shell sed -n 's/^SNAPSHOT=//p' .env 2>/dev/null | head -n 1))
 
+# Default to snapshot mode when SNAPSHOT is not set in .env.
+SNAPSHOT ?= true
+
+# Only choose COMPOSE_FILE automatically when the caller did not provide one.
 ifeq ($(origin COMPOSE_FILE), undefined)
-ifeq ($(SNAPSHOT),false)
-COMPOSE_FILE := docker-compose-import.yml
-MODE_NAME := import
+  ifeq ($(SNAPSHOT),false)
+    COMPOSE_FILE := docker-compose-import.yml
+    MODE_NAME := import
+  else
+    COMPOSE_FILE := docker-compose.yml
+    MODE_NAME := snapshot
+  endif
 else
-COMPOSE_FILE := docker-compose.yml
-MODE_NAME := snapshot
-endif
+  MODE_NAME := custom
 endif
 
 COMPOSE = docker compose --env-file .env -f $(COMPOSE_FILE)
@@ -23,9 +26,9 @@ help:
 	@echo ""
 	@echo "Usage:"
 	@echo "  cp .env.example .env  # first time"
-	@echo "  make SNAPSHOT=true setup"
-	@echo "  make SNAPSHOT=true start-reth"
-	@echo "  make SNAPSHOT=false start-reth"
+	@echo "  make setup"
+	@echo "  make start-reth"
+	@echo "  make start-op-node"
 	@echo ""
 	@echo "Targets:"
 	@echo "  setup         Run preflight and rebuild the images"
