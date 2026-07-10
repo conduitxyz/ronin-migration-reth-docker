@@ -1,3 +1,7 @@
+# ⚠️ Archived repository
+
+This repository is archived and no longer the recommended source for running external nodes. Use https://github.com/conduitxyz/conduit-optimism-external-node/ instead.
+
 # Ronin Migration Docker Images (op-reth, op-node, eigenda-proxy)
 
 Dockerfiles that can be used to run a reth node for the Ronin L1 -> L2 migration. This setup runs reth alongside `op-node` and `eigenda-proxy`, with `make` selecting either snapshot bootstrap or migration import bootstrap.
